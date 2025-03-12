@@ -34,73 +34,80 @@ black = Pixel 0 0 0
 
 -- A function to scale a pixel by a given number
 pixelScale :: Double -> Pixel -> Pixel
-pixelScale = undefined
+pixelScale scalar (Pixel r g b) = Pixel (scalar * r) (scalar * g) (scalar * b)
 
 -- Add 2 pixels together componentwise
 pixelAdd :: Pixel -> Pixel -> Pixel
-pixelAdd = undefined
+pixelAdd (Pixel r1 g1 b1) (Pixel r2 g2 b2) = Pixel (r1 + r2) (g1 + g2) (b1 + b2)
 
 -- get the red component of a pixel
 red :: Pixel -> Double
-red = undefined
+red (Pixel r _ _) = r
 
 -- get the green component of a pixel
 green :: Pixel -> Double
-green = undefined
+green (Pixel _ g _) = g
 
 -- get the blue component of a pixel
 blue :: Pixel -> Double
-blue = undefined
+blue (Pixel _ _ b) = b
 
 -- A function that takes a pixel transformation
 -- and applies it to all of the pixels in the image
 picMap :: (a -> a) -> [[a]] -> [[a]]
-picMap = undefined
+picMap f = map (map f)
 
 -- group a list into groups of size n.
 -- example group 2 [1,2,3,4,5,6]
 -- [[1,2],[3,4],[5,6]
+-- if n is not positive, it should throw an error
 group :: Int -> [a] -> [[a]]
-group = undefined
+-- base case: if the list is empty, return an empty list
+group _ [] = []
+-- recursive case: take the first n elements of the list and group them, then recurse on the rest of the list
+group n xs
+    | n > 0 = take n xs : group n (drop n xs)
+    | otherwise = error "n should be greater than 0"
 
 -- returns the height of an image
 height :: [[a]] -> Int
-height = undefined
+height xs = length xs
 
 -- returns the width of an image
 -- If an image has no rows, then it should have a width of 0
 width :: [[a]] -> Int
-width = undefined
+width [] = 0
+width xs = length (head xs)
 
 -- creates an NxM matrix of black pixels
 -- N rows
 -- M columns
 blackBox :: Int -> Int -> [[Pixel]]
-blackBox = undefined
+blackBox n m = replicate n (replicate m black)
 
 -- adds n rows of black pixels to the top of the image
 padTop :: Int -> Picture -> Picture
-padTop = undefined
+padTop n xs = replicate n (replicate (width xs) black) ++ xs
 
 -- adds n rows of black pixels to the bottom of the image
 padBottom :: Int -> Picture -> Picture
-padBottom = undefined
+padBottom n xs = xs ++replicate n (replicate (width xs) black)
 
 -- adds n rows of black pixels to the left of the image
 padLeft :: Int -> Picture -> Picture
-padLeft = undefined
+padLeft n xs = map (replicate n black ++) xs
 
 -- adds n rows of black pixels to the right of the image
 padRight :: Int -> Picture -> Picture
-padRight = undefined
+padRight n xs = map (++ replicate n black) xs
 
 -- pad an immage to the left and the right with n columns of black pixels.
 padH :: Int -> Picture -> Picture
-padH = undefined
+padH n xs = padLeft n (padRight n xs)
 
 -- pad an immage above and below with n rows of black pixels
 padV :: Int -> Picture -> Picture
-padV = undefined
+padV n xs = padTop n (padBottom n xs)
 
 -- cell shades an image
 cellShade :: Picture -> Picture
