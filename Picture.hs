@@ -111,7 +111,7 @@ padV n xs = padTop n (padBottom n xs)
 
 -- cell shades an image
 cellShade :: Picture -> Picture
-cellShade = undefined
+cellShade = picMap ()
 
 -- converts an image to gray scale.
 grayScale :: Picture -> Picture
@@ -262,10 +262,10 @@ edge = picMap (pixelScale 4) . convolveImage kernal . grayScale
 -- This tends to blur a little more, but it doesn't look as good as gausing bluring.
 blur :: Picture -> Picture
 blur = convolveImage kernal
- where kernal = [[1/25,1/25,1/25,1/25,1/25], 
-                 [1/25,1/25,1/25,1/25,1/25], 
-                 [1/25,1/25,1/25,1/25,1/25], 
-                 [1/25,1/25,1/25,1/25,1/25], 
+ where kernal = [[1/25,1/25,1/25,1/25,1/25],
+                 [1/25,1/25,1/25,1/25,1/25],
+                 [1/25,1/25,1/25,1/25,1/25],
+                 [1/25,1/25,1/25,1/25,1/25],
                  [1/25,1/25,1/25,1/25,1/25]]
 
 -- gaussian bluring
@@ -274,9 +274,9 @@ blur = convolveImage kernal
 -- (technically a binomial distribution since pictures are discrete)
 gaussian :: Picture -> Picture
 gaussian = convolveImage kernal
- where kernal = [[1/273, 4/273, 7/273, 4/273,1/273], 
-                 [4/273,16/273,27/273,16/273,4/273], 
-                 [7/273,26/273,41/273,26/273,7/273], 
-                 [4/273,16/273,27/273,16/273,4/273], 
+ where kernal = [[1/273, 4/273, 7/273, 4/273,1/273],
+                 [4/273,16/273,27/273,16/273,4/273],
+                 [7/273,26/273,41/273,26/273,7/273],
+                 [4/273,16/273,27/273,16/273,4/273],
                  [1/273, 4/273, 7/273, 4/273,1/273]]
 
