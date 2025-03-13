@@ -111,11 +111,27 @@ padV n xs = padTop n (padBottom n xs)
 
 -- cell shades an image
 cellShade :: Picture -> Picture
-cellShade = picMap ()
+cellShade = picMap cellShadePixel
+  where
+    cellShadePixel :: Pixel -> Pixel
+    cellShadePixel (Pixel r g b) = Pixel (roundToThird r) (roundToThird g) (roundToThird b)
+    
+    -- Helper function to round a value to the nearest third (0, 1/3, 2/3, or 1)
+    roundToThird :: Double -> Double
+    roundToThird x
+      | x < 1/6   = 0.0    -- Round to 0
+      | x < 1/2   = 1/3    -- Round to 1/3
+      | x < 5/6   = 2/3    -- Round to 2/3
+      | otherwise = 1.0    -- Round to 1
 
 -- converts an image to gray scale.
 grayScale :: Picture -> Picture
-grayScale = undefined
+grayScale = picMap grayScalePixel
+  where
+    grayScalePixel :: Pixel -> Pixel
+    grayScalePixel (Pixel r g b) = 
+      let luminance = 0.299 * r + 0.587 * g + 0.114 * b
+      in Pixel luminance luminance luminance
 
 
 --------------------------------------------------------------------------
