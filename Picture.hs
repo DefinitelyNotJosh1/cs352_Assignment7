@@ -1,6 +1,7 @@
 module Picture where
 
 import Data.List (transpose,tails)
+import Control.Applicative (Alternative(empty))
 
 -- Data Structures for representing an Picture
 -- A Pixel is just a triple of doubles between 0 and 1
@@ -142,13 +143,20 @@ grayScale = picMap grayScalePixel
 
 -- compute the average color of a list of pixels
 average :: [Pixel] -> Pixel
-average = undefined
+average pixels = Pixel avgRed avgGreen avgBlue
+  where 
+    -- convert int to integral
+    len = fromIntegral $ length pixels
+    avgRed = sum (map red pixels) / len
+    avgGreen = sum (map green pixels) / len
+    avgBlue = sum (map blue pixels) / len
+
 
 -- put p2 below p1.
 -- If the two pictures are not the same width,
 -- you will need to add black space to the right of the smaller picture
 addDown :: Picture -> Picture -> Picture
-addDown = undefined
+addDown p1 p2 = undefined
 
 -- put p2 above p1.
 -- If the two pictures are not the same width,
@@ -182,29 +190,39 @@ addLeft = undefined
 -- |                 |
 -- |D               C|
 -- -------------------
+
+-- -------------------
+-- |C               D|
+-- |                 |
+-- |                 |
+-- |                 |
+-- |                 |
+-- |                 |
+-- |B               A|
+-- -------------------
 --
 -- Now, flip the square around using horizontal, virtical, or transpose flips,
 -- you can recreate any of the orther translations!
 
 -- flip the image horizontally (mirror the image)
 flipH :: [[a]] -> [[a]]
-flipH = undefined
+flipH = map reverse
 
 -- flip the image vertically
 flipV :: [[a]] -> [[a]]
-flipV = undefined
+flipV = reverse
 
 -- rotate an image 90 degrees
 rot90 :: [[a]] -> [[a]]
-rot90 = undefined
+rot90 = transpose . reverse
 
 -- rotate the image 180 degrees
 rot180 :: [[a]] -> [[a]]
-rot180 = undefined
+rot180 = flipH . flipV
 
 -- rotate the image 270 degrees
 rot270 :: [[a]] -> [[a]]
-rot270 = undefined
+rot270 = rot180 . rot90
 
 -- flip the image over the first diagonal
 -- this is the diagonal from A to C
