@@ -156,13 +156,13 @@ average pixels = Pixel avgRed avgGreen avgBlue
 -- If the two pictures are not the same width,
 -- you will need to add black space to the right of the smaller picture
 addDown :: Picture -> Picture -> Picture
-addDown p1 p2 = undefined
+addDown p1 p2 = p1 ++ padRight (width p1 - width p2) p2
 
 -- put p2 above p1.
 -- If the two pictures are not the same width,
 -- you will need to add black space to the right of the smaller picture
 addUp :: Picture -> Picture -> Picture
-addUp = undefined
+addUp p1 p2 = padRight (width p1 - width p2) p2 ++ p1
 
 -- put p2 to the right of p1.
 -- If the two pictures are not the same height,
@@ -189,16 +189,6 @@ addLeft = undefined
 -- |                 |
 -- |                 |
 -- |D               C|
--- -------------------
-
--- -------------------
--- |C               D|
--- |                 |
--- |                 |
--- |                 |
--- |                 |
--- |                 |
--- |B               A|
 -- -------------------
 --
 -- Now, flip the square around using horizontal, virtical, or transpose flips,
@@ -227,30 +217,27 @@ rot270 = rot180 . rot90
 -- flip the image over the first diagonal
 -- this is the diagonal from A to C
 flip1 :: [[a]] -> [[a]]
-flip1 = undefined
+flip1 = transpose
 
 -- flip the image over the second diagonal
 -- this is the diagonal from B to D
 flip2 :: [[a]] -> [[a]]
-flip2 = undefined
-
+flip2 = flipV . rot90
 
 pixelate :: Int -> Picture -> Picture
-pixelate = undefined
+pixelate n xs = unmakePixels $ picMap (sameColor n) (makePixels n xs)
 
 -- really this is Int -> Picture -> [[BigPixel]]
 makePixels :: Int -> [[a]] -> [[[[a]]]]
-makePixels = undefined
+makePixels n xs = map transpose $ group n (map (group n) xs) 
 
 -- really this is [[BigPixel]] -> Picture
 unmakePixels :: [[[[a]]]] -> [[a]]
-unmakePixels = undefined
+unmakePixels = map concat . concat . map transpose
 
 sameColor :: Int -> BigPixel -> BigPixel
-sameColor = undefined
-
-
----------------------------------------------------------------------------
+sameColor n x = replicate n (replicate n (average (concat x)))
+--------------------------s-------------------------------------------------
 --
 -- Extra Credit: Convolution
 --
