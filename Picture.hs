@@ -168,13 +168,16 @@ addUp p1 p2 = padRight (width p1 - width p2) p2 ++ p1
 -- If the two pictures are not the same height,
 -- you will need to add black space below the smaller picture
 addRight :: Picture -> Picture -> Picture
-addRight = undefined
+addRight p1 p2 
+   | height p1 > height p2 = zipWith (++) p1 (padBottom (height p1 - height p2) p2)
+   | height p1 < height p2 = zipWith (++) (padBottom (height p2 - height p1) p1) p2
+   | otherwise = zipWith (++) p1 p2
 
 -- put p2 to the left of p1.
 -- If the two pictures are not the same height,
 -- you will need to add black space below the smaller picture
 addLeft :: Picture -> Picture -> Picture
-addLeft = undefined
+addLeft p1 p2 = addRight p2 p1 -- I am a genius
 
 -- these two functions (and transpose from the List library)
 -- are all you need to complete the flip and rotate functions.
