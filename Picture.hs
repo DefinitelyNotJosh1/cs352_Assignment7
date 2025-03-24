@@ -1,3 +1,6 @@
+-- File by Dr. Stephen Libby and Joshua Krasnogorov
+-- Due Date: 3/24/2025
+
 module Picture where
 
 import Data.List (transpose,tails)
